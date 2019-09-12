@@ -1,0 +1,12 @@
+{
+    "name": "etherra/core",
+    "version": "dev-master",
+    "source": {
+        "url": "http://svn.ztools.org/svn2/maxistar/composer",
+        "type": "svn",
+        "reference": "etherra/core/trunk"
+    },
+    "autoload": {
+        "psr-0": {"etherra\\": "class/"}
+    }
+}
