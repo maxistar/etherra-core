@@ -7,14 +7,15 @@ class Site
     {
         self::initConstants();
         self::loadDefaults();
-        
+
         self::fixSiteAddress();
         date_default_timezone_set(conf('site.timezone', 'EST'));
         if (ini_get('magic_quotes_gpc')) {
             $_GET         = self::stripslashes($_GET);
             $_POST         = self::stripslashes($_POST);
             $_COOKIE     = self::stripslashes($_COOKIE);
-        }    
+        }
+
         error_reporting(conf('site.error_reporting', -1));
         if (php_sapi_name() == 'cli'){
             set_error_handler(array('etherra\\Site', 'errorHandlerText'));
@@ -22,23 +23,17 @@ class Site
         else {
             set_error_handler(array('etherra\\Site', 'errorHandlerHTML'));
         }
-        
+
         Hooks::initHooks();
         Hooks::callHook('Site::init');
     }    
 
     static function initConstants(){
-    	define(
-    	'_SITE_ROOT', dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))).
-    	DIRECTORY_SEPARATOR
-    	);
-    	define('_INC_ROOT', _SITE_ROOT.'inc'.DIRECTORY_SEPARATOR);
-    	define('_CONFIG_ROOT', _INC_ROOT.'config'.DIRECTORY_SEPARATOR);
-    	define('_CACHE_ROOT', _INC_ROOT.'cache'.DIRECTORY_SEPARATOR);
+    	//moved to site.php
     }
     
     static function loadDefaults(){
-    	$dir = _SITE_ROOT.'vendor/etherra';
+    	$dir = _APP_ROOT . 'vendor/etherra';
     	if (is_dir($dir)){
     		if ($dh = opendir($dir)) {
     			$files = array();

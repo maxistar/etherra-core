@@ -25,9 +25,9 @@ class Hooks {
     }
 
     static function initHooks() {
-    	if (is_file($file = _CONFIG_ROOT.'hooks.conf.php')){
-    		include $file;
-    	}
+        if (is_file($file = _CONFIG_ROOT . 'hooks.conf.php')) {
+            include $file;
+        }
     }
     
 }
