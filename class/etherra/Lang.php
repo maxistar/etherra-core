@@ -30,7 +30,7 @@ class Lang {
             self::$files[$name] = true;
             $suffix = (conf('site.charset')=='' || conf('site.charset')=='utf-8')?'':'_'.conf('site.charset');
             
-            $dir = _SITE_ROOT.'vendor/etherra';
+            $dir = _APP_ROOT.'vendor/etherra';
             if (is_dir($dir)){
             	if ($dh = opendir($dir)) {
             		while (($file = readdir($dh)) !== false) {
