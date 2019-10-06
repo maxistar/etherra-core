@@ -28,7 +28,27 @@ class Hooks {
         if (is_file($file = _CONFIG_ROOT . 'hooks.conf.php')) {
             include $file;
         }
+
+        //call folder based hooks
+        $dir = _CONFIG_ROOT . 'hooks/';
+        $files = array();
+        if (is_dir($dir)) {
+            if ($dh = opendir($dir)) {
+                while (($file = readdir($dh)) !== false) {
+                    if (substr($file,0,1)!=='.'){
+                        $files[] = $file;
+                    }
+                }
+                closedir($dh);
+            }
+        }
+        sort($files);
+        foreach($files as $file) {
+            include($dir . $file);
+        }
+
+        self::callHook('Hooks::initHooks');
+        self::callHook('Hooks::init');
     }
-    
 }
 
