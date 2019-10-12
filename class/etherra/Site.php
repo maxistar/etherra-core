@@ -11,13 +11,13 @@ class Site
         self::fixSiteAddress();
         date_default_timezone_set(conf('site.timezone', 'EST'));
         if (ini_get('magic_quotes_gpc')) {
-            $_GET         = self::stripslashes($_GET);
-            $_POST         = self::stripslashes($_POST);
+            $_GET        = self::stripslashes($_GET);
+            $_POST       = self::stripslashes($_POST);
             $_COOKIE     = self::stripslashes($_COOKIE);
         }
 
         error_reporting(conf('site.error_reporting', -1));
-        if (php_sapi_name() == 'cli'){
+        if (php_sapi_name() == 'cli') {
             set_error_handler(array('etherra\\Site', 'errorHandlerText'));
         }
         else {
@@ -29,23 +29,27 @@ class Site
     }    
 
     static function initConstants(){
-    	//moved to site.php
+        //moved to site.php
     }
     
     static function loadDefaults(){
-    	$dir = _APP_ROOT . 'vendor/etherra';
-    	if (is_dir($dir)){
-    		if ($dh = opendir($dir)) {
-    			$files = array();
-    			while (($file = readdir($dh)) !== false) {
-    				if (substr($file,0,1)=='.') continue;
-    				if (!is_file($default_file = $dir.'/'.$file.'/default.php')) continue;
-    				include $default_file;
-    			}
-    			closedir($dh);
-    		}
-    	}
-    	
+        $dir = _APP_ROOT . 'vendor/etherra';
+        if (is_dir($dir)) {
+            if ($dh = opendir($dir)) {
+                $files = array();
+                while (($file = readdir($dh)) !== false) {
+                    if (substr($file,0,1)=='.') {
+                        continue;
+                    }
+                    if (!is_file($default_file = $dir . '/' . $file . '/default.php')) {
+                        continue;
+                    }
+                    include $default_file;
+                }
+                closedir($dh);
+            }
+        }
+
     }
     
     static function getLang()
@@ -56,10 +60,12 @@ class Site
     static function fixSiteAddress()
     {
         $home = conf('site.home');
-        if (empty($home)) return;
+        if (empty($home)) {
+            return;
+        }
         if (isset($_SERVER['HTTP_HOST'])) {
-            if (('http://' . $_SERVER['HTTP_HOST']!=$home)) {
-                header('Location: ' . $home.$_SERVER['REQUEST_URI']);
+            if (('http://' . $_SERVER['HTTP_HOST'] != $home)) {
+                header('Location: ' . $home . $_SERVER['REQUEST_URI']);
                 die();
             }
         }
@@ -67,14 +73,13 @@ class Site
 
     static function slashify($var)
     {
-        $lastdig = substr($var, strlen($var)-1, 1);
-        if (($lastdig!='/') or ($lastdig!='\\')) {
-            return $var.'/';
+        $lastdig = substr($var, strlen($var) - 1, 1);
+        if (($lastdig != '/') or ($lastdig != '\\')) {
+            return $var . '/';
         } else {
             return $var;
         }
     }
-
 
     static function stripslashes($val)
     {
@@ -83,7 +88,7 @@ class Site
             return stripslashes($val);
         } elseif ($type == 'array') {
             $var1 = array();
-            foreach ($val as $key=>$value) {
+            foreach ($val as $key => $value) {
                 $var1[$key] = self::stripslashes($val[$key]);
             }
             return $var1;
@@ -162,7 +167,7 @@ class Site
     }
 }
 
-function conf($name,$default=null)
+function conf($name, $default = null)
 {
     return Config::get($name, $default);
 }
@@ -172,7 +177,7 @@ function l($word)
     return Lang::translate($word);
 }
 
-function ll($word,$count)
+function ll($word, $count)
 {
     return Lang::plural($word, $count);
 }
