@@ -8,7 +8,6 @@ class Site
         self::initConstants();
         self::loadDefaults();
 
-        self::fixSiteAddress();
         date_default_timezone_set(conf('site.timezone', 'EST'));
         if (ini_get('magic_quotes_gpc')) {
             $_GET        = self::stripslashes($_GET);
@@ -26,12 +25,12 @@ class Site
 
         Hooks::initHooks();
         Hooks::callHook('Site::init');
-    }    
+    }
 
     static function initConstants(){
         //moved to site.php
     }
-    
+
     static function loadDefaults(){
         $dir = _APP_ROOT . 'vendor/etherra';
         if (is_dir($dir)) {
@@ -51,24 +50,10 @@ class Site
         }
 
     }
-    
+
     static function getLang()
     {
         return conf('site.lang');
-    }
-
-    static function fixSiteAddress()
-    {
-        $home = conf('site.home');
-        if (empty($home)) {
-            return;
-        }
-        if (isset($_SERVER['HTTP_HOST'])) {
-            if (('http://' . $_SERVER['HTTP_HOST'] != $home)) {
-                header('Location: ' . $home . $_SERVER['REQUEST_URI']);
-                die();
-            }
-        }
     }
 
     static function slashify($var)
@@ -99,11 +84,11 @@ class Site
 
     static function errorHandlerHTML($errno, $errstr, $errfile, $errline)
     {
-        
+
         if ((error_reporting() & $errno ) == $errno) {
             $errfile = str_replace(getcwd(), '', $errfile);
 
-            $string = "<strong>Warning </strong>: $errstr in <strong>$errfile</strong> on line 
+            $string = "<strong>Warning </strong>: $errstr in <strong>$errfile</strong> on line
             <strong>$errline</strong>";
             if (conf('site.show_errors', 1)) {
                 print self::showStack($string);
@@ -111,13 +96,13 @@ class Site
             self::log($errstr." in ".$errfile." on line ".$errline, 'error');
         }
     }
-    
+
     static function errorHandlerText($errno, $errstr, $errfile, $errline)
     {
-    
+
         if ((error_reporting() & $errno ) == $errno) {
             $errfile = str_replace(getcwd(), '', $errfile);
-    
+
             if (conf('site.show_errors', 1)) {
                 $string = "Warning : $errstr in $errfile on line $errline";
                 print self::showStackText($string);
@@ -144,8 +129,8 @@ class Site
             }
             if ( $exit ) exit;
     }
-    
-    
+
+
     static function showStack($sError, $exit = false)
     {
         echo '<div style="text-align:center;"><table style="border:1px #000 solid;">
