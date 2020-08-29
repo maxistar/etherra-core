@@ -54,7 +54,7 @@ class site_helper_MergeScripter extends site_helper_Scripter {
       if (!file_exists(_SITE_ROOT.$compacted_filename)){
     	 $this->_createCompactedScript(_SITE_ROOT.$compacted_filename);
       }
-      echo '<script type="text/javascript" src="'.$compacted_filename.'"></script>';
+      echo '<script src="'.$compacted_filename.'"></script>';
    }
     
    function _createCompactedScript($filename_new){ 

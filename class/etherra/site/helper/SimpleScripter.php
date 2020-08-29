@@ -50,7 +50,7 @@ class site_helper_SimpleScripter extends site_helper_Helper {
         foreach($items as $script){
             $url = $this->getScriptUrl($script);
             if ($url){
-                $s .= $nl . '<script type="text/javascript" src="'.$url.'"></script>'."\n";
+                $s .= $nl . '<script src="'.$url.'"></script>'."\n";
             }
             else {
                 if (conf('site.show_errors')){
